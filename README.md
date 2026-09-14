@@ -92,8 +92,6 @@ CLOUDFLARE_DEPLOY.md          human deployment checklist
 - `SESSION_SECRET` must never be committed. `.dev.vars`, `.env`, Wrangler state and logs are gitignored.
 - Demo auth is appropriate for this fantasy-demo product; production email verification/password reset can be added later if the app becomes a public account system.
 
-## GitHub
+## Deployment handoff
 
-Recommended repository name: `sahanova-fantasy`.
-
-The repo includes a GitHub Actions quality workflow. The connected GitHub account available to this ChatGPT session is `xtenrore`, but repository creation is not exposed by the current GitHub connector, so the repository itself must first exist before I can write to it through the connector.
+Cloudflare AI should deploy `xtenrore/sahanova-fantasy` from the `main` branch and use `CLOUDFLARE_AI_PROMPT.md` as the authoritative deployment checklist.
