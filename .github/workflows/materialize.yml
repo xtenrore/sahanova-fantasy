@@ -58,8 +58,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          cp .github/workflows/materialize.yml /tmp/materialize.yml
           find "$GITHUB_WORKSPACE" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
           (cd /tmp/sahanova-src && tar --exclude=.git -cf - .) | (cd "$GITHUB_WORKSPACE" && tar -xf -)
+          mkdir -p .github/workflows
+          cp /tmp/materialize.yml .github/workflows/materialize.yml
 
       - name: Commit complete project
         shell: bash
