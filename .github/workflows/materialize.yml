@@ -1,0 +1,51 @@
+name: Materialize SahaNova source
+
+on:
+  push:
+    paths:
+      - ".github/workflows/materialize.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout seed repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Reconstruct and verify source bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .seed/part-* | base64 -d > /tmp/sahanova.bundle
+          echo "65c14d95a323290e3fc3c646721ec3f5af7102133b132048f81d86757b471058  /tmp/sahanova.bundle" | sha256sum -c -
+          rm -rf /tmp/sahanova-src
+          mkdir -p /tmp/sahanova-src
+          git -C /tmp/sahanova-src init
+          git -C /tmp/sahanova-src fetch /tmp/sahanova.bundle refs/heads/main:refs/heads/main
+          git -C /tmp/sahanova-src checkout main
+
+      - name: Materialize exact project tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          find "$GITHUB_WORKSPACE" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          (cd /tmp/sahanova-src && tar --exclude=.git -cf - .) | (cd "$GITHUB_WORKSPACE" && tar -xf -)
+
+      - name: Commit complete project
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Import complete SahaNova Cloudflare project"
+            git push origin HEAD:main
+          fi
