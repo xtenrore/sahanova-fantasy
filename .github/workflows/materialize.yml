@@ -1,6 +1,9 @@
 name: Materialize SahaNova source
 
 on:
+  workflow_dispatch:
+  issues:
+    types: [opened]
   push:
     paths:
       - ".github/workflows/materialize.yml"
@@ -10,6 +13,7 @@ permissions:
 
 jobs:
   materialize:
+    if: github.event_name != 'issues' || github.event.issue.title == 'Materialize SahaNova source'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout seed repository
