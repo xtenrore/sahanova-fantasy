@@ -1,0 +1,51 @@
+{
+  "users": [
+    {
+      "id": "demo-user",
+      "email": "demo@sahanova.local",
+      "name": "SahaNova Demo",
+      "role": "manager",
+      "salt": "a68fe230e6ceaf01566d5ae129561ac7",
+      "hash": "e6d25430bad5a4f67eb68ad45a53445cc2fa694badf4eb129a59d4a28ebaeaa631631b5d5ff845bdf7fca66f78613258dcc49f9eff049839e96ffe40acffc7e9"
+    },
+    {
+      "id": "demo-admin",
+      "email": "admin@sahanova.local",
+      "name": "SahaNova Admin",
+      "role": "admin",
+      "salt": "42a562d44264a2bb041cbbb001746737",
+      "hash": "9622ce02079e92030049757bd9f031c8d3a22c1dadb880055d8eb80faf8f3c740307bb8f218e9bd9329b4766e5e952545faf58af6bd35699c62240108b9e2e69"
+    }
+  ],
+  "adminConfig": {
+    "season": "2026/27",
+    "gameweek": 5,
+    "maxPerClub": 3,
+    "initialBudget": 100,
+    "scoring": {
+      "appearance": 1,
+      "sixtyMinutes": 1,
+      "goalGK": 6,
+      "goalDEF": 6,
+      "goalMID": 5,
+      "goalFWD": 4,
+      "assist": 3,
+      "cleanSheetGK": 4,
+      "cleanSheetDEF": 4,
+      "cleanSheetMID": 1,
+      "cleanSheetFWD": 0,
+      "penaltySaved": 5,
+      "penaltyMissed": -2,
+      "ownGoal": -2,
+      "yellow": -1,
+      "red": -3,
+      "savesEvery3": 1,
+      "captainMultiplier": 2
+    }
+  },
+  "adminOverrides": {
+    "clubs": {},
+    "players": {},
+    "fixtures": {}
+  }
+}

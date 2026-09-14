@@ -1,0 +1,13 @@
+node_modules/
+.dev.vars
+.env
+.env.*
+!.env.example
+!.dev.vars.example
+.wrangler/
+.devcontainer/
+.DS_Store
+*.log
+coverage/
+qa-*.png
+testshot.png

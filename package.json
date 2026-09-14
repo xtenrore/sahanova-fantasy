@@ -1,0 +1,20 @@
+{
+  "name": "sahanova-fantasy",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.mjs",
+    "start": "node server.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "build": "node scripts/build-check.mjs",
+    "qa": "node scripts/qa-check.mjs && npm test && npm run build",
+    "cf:dev": "npx wrangler@latest dev",
+    "cf:migrate:local": "npx wrangler@latest d1 migrations apply sahanova-db --local",
+    "cf:migrate:remote": "npx wrangler@latest d1 migrations apply sahanova-db --remote",
+    "cf:deploy": "npx wrangler@latest deploy"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

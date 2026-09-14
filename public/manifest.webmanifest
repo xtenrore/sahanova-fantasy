@@ -1,0 +1,5 @@
+{
+  "name":"SahaNova Fantasy Football","short_name":"SahaNova","description":"Premium fantasy football demo experience","start_url":"/","display":"standalone","background_color":"#07130e","theme_color":"#07130e","orientation":"portrait-primary","lang":"tr","categories":["sports","games"],
+  "icons":[{"src":"/assets/icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},{"src":"/assets/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}],
+  "shortcuts":[{"name":"Takımım","url":"/?screen=team","icons":[{"src":"/assets/icon-192.png","sizes":"192x192"}]},{"name":"Maçlar","url":"/?screen=matches","icons":[{"src":"/assets/icon-192.png","sizes":"192x192"}]}]
+}

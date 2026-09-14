@@ -96,4 +96,4 @@ CLOUDFLARE_DEPLOY.md          human deployment checklist
 
 Recommended repository name: `sahanova-fantasy`.
 
-The repo includes a GitHub Actions quality workflow.
+The repo includes a GitHub Actions quality workflow. The connected GitHub account available to this ChatGPT session is `xtenrore`, but repository creation is not exposed by the current GitHub connector, so the repository itself must first exist before I can write to it through the connector.

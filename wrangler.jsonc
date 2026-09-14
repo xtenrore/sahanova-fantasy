@@ -1,0 +1,26 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "sahanova-fantasy",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-09-14",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "sahanova-db",
+      "database_id": "REPLACE_WITH_D1_DATABASE_ID",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "vars": {
+    "APP_ENV": "production"
+  },
+  "secrets": {
+    "required": ["SESSION_SECRET"]
+  }
+}
