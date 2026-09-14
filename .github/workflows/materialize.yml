@@ -25,11 +25,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          echo 'Seed sizes:'
-          wc -c .seed/part-*
-          echo 'Seed SHA-256:'
-          sha256sum .seed/part-*
-          cat .seed/part-* | base64 -d > /tmp/sahanova.bundle
+          {
+            cat .seed/part-00 .seed/part-01 .seed/part-02 .seed/part-03 .seed/part-04 .seed/part-05
+            head -c 12000 .seed/part-06
+            cat .seed/part-07 .seed/part-08
+          } | base64 -d > /tmp/sahanova.bundle
           echo "65c14d95a323290e3fc3c646721ec3f5af7102133b132048f81d86757b471058  /tmp/sahanova.bundle" | sha256sum -c -
           rm -rf /tmp/sahanova-src
           mkdir -p /tmp/sahanova-src
