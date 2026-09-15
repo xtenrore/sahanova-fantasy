@@ -74,6 +74,7 @@ export function buildManagerInsights({players,clubs,fixtures,squadIds=[],startin
   transferCandidates=players
    .filter(p=>!squadIds.includes(p.id)&&p.position===transferOut.position&&p.status==='available'&&p.price<=maxPrice&&clubCount(squadPlayers,p.clubId)<3)
    .map(p=>({player:p,...projections.get(p.id),gain:Math.round(((projections.get(p.id)?.projected||0)-(projections.get(transferOut.id)?.projected||0))*10)/10}))
+   .filter(x=>x.gain>0)
    .sort((a,b)=>b.gain-a.gain||b.player.value-a.player.value)
    .slice(0,3);
  }
