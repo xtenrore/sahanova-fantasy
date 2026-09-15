@@ -8,7 +8,7 @@ import { makeSession, sessionFromRequest, sessionCookie, clearSessionCookie } fr
 
 const __dirname=path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC=path.join(__dirname,'public');
-const DATA=path.join(__dirname,'data','db.json');
+const DATA=process.env.DATA_PATH||path.join(__dirname,'data','db.json');
 const PORT=Number(process.env.PORT||3000);
 const attempts=new Map();
 
@@ -16,7 +16,7 @@ const mime={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8',
 const securityHeaders={'X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','Referrer-Policy':'strict-origin-when-cross-origin','Permissions-Policy':'camera=(), microphone=(), geolocation=()','Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; manifest-src 'self'; worker-src 'self'"};
 const hashPassword=(password,salt=randomBytes(16).toString('hex'))=>({salt,hash:scryptSync(password,salt,64).toString('hex')});
 function safeEqual(a,b){try{return timingSafeEqual(Buffer.from(a,'hex'),Buffer.from(b,'hex'))}catch{return false}}
-async function ensureDb(){if(existsSync(DATA)){try{const current=JSON.parse(await readFile(DATA,'utf8'));if(Array.isArray(current.users)&&current.users.length>0)return}catch{}}await mkdir(path.dirname(DATA),{recursive:true});const d={users:[],adminConfig:{season:'2026/27',gameweek:5,maxPerClub:3,initialBudget:100,scoring:{appearance:1,sixtyMinutes:1,goalGK:6,goalDEF:6,goalMID:5,goalFWD:4,assist:3,cleanSheetGK:4,cleanSheetDEF:4,cleanSheetMID:1,cleanSheetFWD:0,penaltySaved:5,penaltyMissed:-2,ownGoal:-2,yellow:-1,red:-3,savesEvery3:1,captainMultiplier:2}}};for(const u of [{id:'demo-user',email:'demo@sahanova.local',name:'SahaNova Demo',password:'demo1234',role:'manager'},{id:'demo-admin',email:'admin@sahanova.local',name:'SahaNova Admin',password:'admin1234',role:'admin'}]){const p=hashPassword(u.password);d.users.push({id:u.id,email:u.email,name:u.name,role:u.role,...p})}await writeFile(DATA,JSON.stringify(d,null,2));}
+async function ensureDb(){if(existsSync(DATA)){try{const current=JSON.parse(await readFile(DATA,'utf8'));if(Array.isArray(current.users)&&current.users.length>0)return}catch{}}await mkdir(path.dirname(DATA),{recursive:true});const d={users:[],adminConfig:{season:'2026/27',gameweek:5,maxPerClub:3,initialBudget:100,scoring:{appearance:1,sixtyMinutes:1,goalGK:10,goalDEF:6,goalMID:5,goalFWD:4,assist:3,cleanSheetGK:4,cleanSheetDEF:4,cleanSheetMID:1,cleanSheetFWD:0,penaltySaved:5,penaltyMissed:-2,ownGoal:-2,yellow:-1,red:-3,savesEvery3:1,captainMultiplier:2}}};for(const u of [{id:'demo-user',email:'demo@sahanova.local',name:'SahaNova Demo',password:'demo1234',role:'manager'},{id:'demo-admin',email:'admin@sahanova.local',name:'SahaNova Admin',password:'admin1234',role:'admin'}]){const p=hashPassword(u.password);d.users.push({id:u.id,email:u.email,name:u.name,role:u.role,...p})}await writeFile(DATA,JSON.stringify(d,null,2));}
 async function getDb(){await ensureDb();const db=JSON.parse(await readFile(DATA,'utf8'));db.adminOverrides=db.adminOverrides||{clubs:{},players:{},fixtures:{}};return db}
 async function putDb(db){await writeFile(DATA,JSON.stringify(db,null,2))}
 function sessionUser(req,db){const session=sessionFromRequest(req);if(!session)return null;return db.users.find(u=>u.id===session.id)||null}

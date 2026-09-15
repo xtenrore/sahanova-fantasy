@@ -8,7 +8,7 @@ let tab='overview';
 let overrides;try{overrides=JSON.parse(localStorage.getItem('sahanova.admin.overrides')||'{}')}catch{overrides={}}
 overrides={clubs:{},players:{},fixtures:{},...overrides};
 function persistOverrides(){localStorage.setItem('sahanova.admin.overrides',JSON.stringify(overrides));void fetch('/api/admin/overrides',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(overrides)}).catch(()=>{})}
-const defaultScoring={appearance:1,sixtyMinutes:1,goalGK:6,goalDEF:6,goalMID:5,goalFWD:4,assist:3,cleanSheetGK:4,cleanSheetDEF:4,cleanSheetMID:1,cleanSheetFWD:0,penaltySaved:5,penaltyMissed:-2,ownGoal:-2,yellow:-1,red:-3,savesEvery3:1,captainMultiplier:2};
+const defaultScoring={appearance:1,sixtyMinutes:1,goalGK:10,goalDEF:6,goalMID:5,goalFWD:4,assist:3,cleanSheetGK:4,cleanSheetDEF:4,cleanSheetMID:1,cleanSheetFWD:0,penaltySaved:5,penaltyMissed:-2,ownGoal:-2,yellow:-1,red:-3,savesEvery3:1,captainMultiplier:2};
 const savedConfig=JSON.parse(localStorage.getItem('sahanova.admin.config')||'null');
 const demoConfig=savedConfig?{...savedConfig,scoring:{...defaultScoring,...savedConfig.scoring}}:{season:'2026/27',gameweek:5,maxPerClub:3,initialBudget:100,scoring:{...defaultScoring}};
 const scoringLabels={appearance:'appearanceLabel',sixtyMinutes:'sixtyMinutesLabel',goalGK:'goalGKLabel',goalDEF:'goalDEFLabel',goalMID:'goalMIDLabel',goalFWD:'goalFWDLabel',assist:'assistLabel',cleanSheetGK:'cleanSheetGKLabel',cleanSheetDEF:'cleanSheetDEFLabel',cleanSheetMID:'cleanSheetMIDLabel',cleanSheetFWD:'cleanSheetFWDLabel',penaltySaved:'penaltySavedLabel',penaltyMissed:'penaltyMissedLabel',ownGoal:'ownGoalLabel',yellow:'yellowCard',red:'redCard',savesEvery3:'savesEvery3Label',captainMultiplier:'captainMultiplierLabel'};

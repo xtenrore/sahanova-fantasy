@@ -108,7 +108,7 @@ export function applyOverrides(overrides = {}) {
   for (const f of fixtures) Object.assign(f, overrides.fixtures?.[f.id] || {});
 }
 
-// Browser cache keeps admin changes usable offline; Cloudflare D1 refreshes it at app startup.
+// Browser cache keeps admin changes usable offline; the Railway/Node bootstrap refreshes it at app startup.
 if (typeof localStorage !== 'undefined') {
   try { applyOverrides(JSON.parse(localStorage.getItem('sahanova.admin.overrides') || '{}')); } catch {}
 }

@@ -3,7 +3,6 @@
 Production service: `sahanova-fantasy`
 
 ## Source
-
 - GitHub repo: `xtenrore/sahanova-fantasy`
 - Branch: `main`
 - Start command: `rm -rf data && ln -s /data data && npm start`
@@ -11,27 +10,27 @@ Production service: `sahanova-fantasy`
 - Restart policy: on failure
 
 ## Persistence
+Attach the persistent Railway volume `sahanova-data` at `/data`.
+The start command symlinks the application's `data/` directory to that volume so accounts, admin config and overrides survive deployments.
 
-Attach a Railway persistent volume named `sahanova-data` at `/data`.
-
-The start command symlinks the application's `data/` directory to that volume. This makes `db.json` persist across deployments while preserving the same local development code path.
+`server.mjs` also supports `DATA_PATH` when an explicit JSON database path is preferred.
 
 ## Production variables
-
-Set these in Railway:
-
 - `NODE_ENV=production`
 - `SESSION_SECRET` — strong random secret, at least 32 characters
+- optional `DATA_PATH=/data/db.json`
 
-Do not commit the secret.
+Do not commit secret values.
 
-## Verification
-
-After deploy:
-
-1. `GET /api/health` returns HTTP 200 and `{ "ok": true }`.
-2. `/` loads the fullscreen-first SahaNova UI.
-3. Manager login works with `demo@sahanova.local` / `demo1234`.
-4. Admin login works with `admin@sahanova.local` / `admin1234`.
-5. Admin configuration changes survive a redeploy.
-6. `/manifest.webmanifest` and `/sw.js` load successfully.
+## v1.3 verification
+1. `npm run qa` passes all domain, session, Nova IQ and Parity+ tests.
+2. `GET /api/health` returns HTTP 200 and `{ "ok": true }`.
+3. `/` loads the fullscreen-first SahaNova UI.
+4. Manager login works with `demo@sahanova.local` / `demo1234`.
+5. Admin login works with `admin@sahanova.local` / `admin1234`.
+6. Admin configuration changes survive a redeploy.
+7. `/manifest.webmanifest` and `/sw.js` load successfully.
+8. `public/sw.js` serves cache `sahanova-v4` and includes the Parity+ assets.
+9. More → Nostradamus / Manager Cards / Status / Cups / Rewards / Discover / 3-Week Planner opens correctly.
+10. Team page shows deadline, ordered bench and active-card state.
+11. Transfers are unlimited; budget/card rules still apply.
