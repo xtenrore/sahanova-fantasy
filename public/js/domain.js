@@ -4,7 +4,7 @@ export const FORMATIONS = {
 };
 export const SQUAD_RULES = { size:15, GK:2, DEF:5, MID:5, FWD:3, maxPerClub:3, initialBudget:100 };
 export const SCORING_RULES = {
- appearance:1, sixtyMinutes:1, goal:{GK:6,DEF:6,MID:5,FWD:4}, assist:3, cleanSheet:{GK:4,DEF:4,MID:1,FWD:0}, penaltySaved:5,
+ appearance:1, sixtyMinutes:1, goal:{GK:10,DEF:6,MID:5,FWD:4}, assist:3, cleanSheet:{GK:4,DEF:4,MID:1,FWD:0}, penaltySaved:5,
  penaltyMissed:-2, ownGoal:-2, yellow:-1, red:-3, savesEvery3:1, bonus:[3,2,1], captainMultiplier:2
 };
 export function byId(players){ return Object.fromEntries(players.map(p=>[p.id,p])); }

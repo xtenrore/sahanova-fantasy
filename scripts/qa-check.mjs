@@ -2,10 +2,13 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { dictionaries } from '../public/js/i18n.js';
 import { FORMATIONS } from '../public/js/domain.js';
-const [css,enhCss,app,enh,index,manifestRaw,sw,server,admin,insights]=await Promise.all(['public/styles.css','public/enhancements.css','public/js/app.js','public/js/enhancements.js','public/index.html','public/manifest.webmanifest','public/sw.js','server.mjs','public/js/admin.js','public/js/insights.js'].map(f=>readFile(f,'utf8')));
+const [css,enhCss,parityCss,app,enh,index,manifestRaw,sw,server,admin,insights,parityUI,parity,planner]=await Promise.all([
+ 'public/styles.css','public/enhancements.css','public/parity.css','public/js/app.js','public/js/enhancements.js','public/index.html','public/manifest.webmanifest','public/sw.js','server.mjs','public/js/admin.js','public/js/insights.js','public/js/parity-ui.js','public/js/parity.js','public/js/planner.js'
+].map(f=>readFile(f,'utf8')));
 const manifest=JSON.parse(manifestRaw);
 assert.deepEqual(Object.keys(dictionaries.tr).sort(),Object.keys(dictionaries.en).sort(),'TR/EN translation keys must match');
 for(const token of ['env(safe-area-inset-top,0px)','env(safe-area-inset-bottom,0px)','@media(max-width:980px)','@media(max-width:640px)','@media(max-width:410px)','@media(min-width:1440px)'])assert.ok(css.includes(token),`responsive CSS missing ${token}`);
+for(const token of ['@media(max-width:980px)','@media(max-width:640px)','@media(max-width:410px)'])assert.ok(parityCss.includes(token),`Parity responsive CSS missing ${token}`);
 for(const viewport of [[390,844],[393,852],[430,932],[768,1024],[1024,1366],[1440,900],[1920,1080]])assert.ok(viewport[0]>0&&viewport[1]>0);
 assert.ok(app.includes('requestFullscreen')&&app.includes('fullscreenchange'),'fullscreen entry/return flow missing');
 for(const id of ['filter-price','filter-points','filter-form','filter-ownership','filter-status','filter-difficulty'])assert.ok(app.includes(id),`market filter missing ${id}`);
@@ -16,10 +19,15 @@ assert.ok(insights.includes('projectPlayer')&&insights.includes('buildManagerIns
 assert.deepEqual(Object.keys(FORMATIONS),['4-4-2','4-3-3','3-4-3','3-5-2','4-5-1','5-3-2','5-4-1']);
 assert.equal(manifest.display,'standalone');assert.ok(manifest.icons?.some(i=>i.sizes==='192x192')&&manifest.icons?.some(i=>i.sizes==='512x512'));
 assert.ok(index.includes('apple-mobile-web-app-capable')&&index.includes('viewport-fit=cover'));
-assert.ok(sw.includes('/offline.html')&&sw.includes("CACHE='sahanova-v3'")&&sw.includes('/js/insights.js')&&sw.includes('/js/enhancements.js')&&sw.includes('/enhancements.css'));
-assert.ok(index.includes('/enhancements.css')&&index.includes('/js/enhancements.js'),'enhancement assets not loaded');
+assert.ok(sw.includes('/offline.html')&&sw.includes("CACHE='sahanova-v4'")&&sw.includes('/js/insights.js')&&sw.includes('/js/enhancements.js')&&sw.includes('/js/parity.js')&&sw.includes('/js/parity-ui.js')&&sw.includes('/parity.css'));
+assert.ok(index.includes('/enhancements.css')&&index.includes('/js/enhancements.js')&&index.includes('/parity.css')&&index.includes('/js/parity-ui.js'),'enhancement/parity assets not loaded');
 assert.ok(!index.toLowerCase().includes('tff-logo'));
 assert.ok(server.includes('/api/public/bootstrap')&&server.includes('/api/admin/overrides')&&server.includes('scryptSync'),'Railway Node API/auth markers missing');
-assert.ok(server.includes("process.env.PORT||3000"),'Railway PORT binding missing');
+assert.ok(server.includes("process.env.PORT||3000")&&server.includes('process.env.DATA_PATH'),'Railway PORT/DATA_PATH binding missing');
 assert.ok(app.includes('/api/public/bootstrap')&&admin.includes('/api/admin/overrides'),'server-backed client bootstrap/admin persistence missing');
-console.log('QA static audit OK — i18n parity, responsive classes, fullscreen, PWA, Nova IQ, fantasy interactions, and Railway Node API integration validated.');
+assert.ok(parityUI.includes('Nostradamus')&&parityUI.includes('Menajer Kartları')&&parityUI.includes('Kafa Kafaya')&&parityUI.includes('3 Hafta Planı'),'Parity+ UI modules missing');
+assert.ok(parity.includes('MANAGER_CARDS')&&parity.includes('resolveAutoSubs')&&parity.includes('generateCupBracket')&&parity.includes('nostradamusScore'),'Parity+ rules engine missing');
+assert.ok(planner.includes('buildMultiweekPlan'),'multi-gameweek planner missing');
+assert.ok(parityUI.includes('interceptTransfer')&&parityUI.includes('∞')&&parity.includes('transferWithRules'),'unlimited transfers / manager-card transfer rules missing');
+assert.ok(parityUI.includes('saveSquadBonus')&&parityUI.includes('benchOrder')&&parityUI.includes('buildAttackStartingXI'),'save bonus / bench-order / attack formation parity missing');
+console.log('QA static audit OK — i18n, responsive/fullscreen/PWA, Nova IQ, Parity+ modules, official-rule parity, and Railway Node integration validated.');
