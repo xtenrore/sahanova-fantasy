@@ -22,6 +22,7 @@ test('manager insights produces actionable squad intelligence',()=>{
  assert.ok(Array.isArray(result.captainCandidates));
  assert.ok(result.captainCandidates.length>0);
  assert.ok(result.transferCandidates.length<=3);
+ assert.ok(result.transferCandidates.every(x=>x.gain>0));
  if(result.transferTarget)assert.equal(result.transferTarget.player.position,result.transferOut.position);
 });
 
